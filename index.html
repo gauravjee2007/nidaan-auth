@@ -1,115 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>NIDAAN – Secure Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<title>NIDAAN – Secure Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
- <style>
-  * {
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-  }
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
 
-  body {
-    margin: 0;
-    height: 100vh;
-    background: #e5ddd5; /* WhatsApp background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+body {
+  margin: 0;
+  height: 100vh;
+  background: #e5ddd5; /* WhatsApp background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .card {
-    width: 360px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    padding: 22px;
-  }
+.card {
+  width: 92%;
+  max-width: 360px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  padding: 22px;
+}
 
-  h1 {
-    text-align: center;
-    color: #075e54; /* WhatsApp green */
-    margin-bottom: 4px;
-  }
+h1 {
+  text-align: center;
+  color: #075e54; /* WhatsApp green */
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
 
-  p {
-    text-align: center;
-    color: #555;
-    margin-bottom: 18px;
-    font-size: 14px;
-  }
+p {
+  text-align: center;
+  color: #555;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
 
-  label {
-    font-size: 13px;
-    color: #444;
-    margin-top: 10px;
-    display: block;
-  }
+label {
+  font-size: 13px;
+  color: #444;
+  margin-top: 10px;
+  display: block;
+}
 
-  input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 6px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-  }
+input {
+  width: 100%;
+  padding: 11px;
+  margin-top: 6px;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
 
-  input:focus {
-    outline: none;
-    border-color: #25d366;
-  }
+input:focus {
+  outline: none;
+  border-color: #25d366;
+}
 
-  button {
-    width: 100%;
-    margin-top: 18px;
-    padding: 12px;
-    background: #25d366; /* WhatsApp send button */
-    color: #fff;
-    font-size: 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-  }
+button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 13px;
+  background: #25d366; /* WhatsApp send button */
+  color: #fff;
+  font-size: 15px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-  button:hover {
-    background: #1ebe5d;
-  }
+button:hover {
+  background: #1ebe5d;
+}
 
-  .footer {
-    margin-top: 14px;
-    text-align: center;
-    font-size: 11px;
-    color: #777;
-  }
+#otpBox {
+  display: none;
+}
+
+.footer {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 11px;
+  color: #777;
+}
 </style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>NIDAAN</h1>
-    <p>Secure Access Portal</p>
+<div class="card">
+  <h1>NIDAAN</h1>
+  <p>Secure Access Portal</p>
 
-    <label>Full Name</label>
-    <input type="text" placeholder="Enter your name" />
+  <label>Full Name</label>
+  <input type="text" id="name" placeholder="Enter your name" />
 
-    <label>Mobile Number</label>
-    <input type="tel" placeholder="10-digit mobile number" />
+  <label>Email Address</label>
+  <input type="email" id="email" placeholder="Enter your email" />
 
-    <button onclick="sendOtp()">Send OTP</button>
+  <button onclick="sendOtp()">Send OTP</button>
 
-    <div class="footer">
-      Authorized access only • © NIDAAN
-    </div>
+  <div id="otpBox">
+    <label>Enter OTP</label>
+    <input type="text" id="otpInput" placeholder="6-digit OTP" />
+    <button onclick="verifyOtp()">Verify OTP</button>
   </div>
 
-  <script>
-    function sendOtp() {
-      alert("OTP system will be enabled soon.");
-    }
-  </script>
+  <div class="footer">
+    Authorized access only • © NIDAAN
+  </div>
+</div>
+
+<script>
+let generatedOtp = "";
+
+function sendOtp() {
+  const email = document.getElementById("email").value;
+  if (!email) {
+    alert("Please enter email address");
+    return;
+  }
+
+  generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  console.log("OTP (demo):", generatedOtp); // demo only
+
+  alert("OTP sent to your email (demo mode)");
+
+  document.getElementById("otpBox").style.display = "block";
+}
+
+function verifyOtp() {
+  const userOtp = document.getElementById("otpInput").value;
+
+  if (userOtp === generatedOtp) {
+    alert("Login successful ✅");
+    // next page example
+    // window.location.href = "chat.html";
+  } else {
+    alert("Invalid OTP ❌");
+  }
+}
+</script>
 </body>
 </html>
