@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>NIDAAN Auth</title>
+  <meta charset="UTF-8" />
+  <title>NIDAAN – Secure Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #020617;
+      padding: 30px;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+      color: #38bdf8;
+    }
+
+    p {
+      text-align: center;
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-size: 13px;
+      color: #cbd5f5;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 18px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #38bdf8;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 11px;
+      text-align: center;
+      color: #64748b;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>NIDAAN Auth – Setup in progress</h1>
-  <p>Login system coming soon.</p>
+  <div class="card">
+    <h1>NIDAAN</h1>
+    <p>Secure Access Portal</p>
+
+    <label>Full Name</label>
+    <input type="text" placeholder="Enter your name" />
+
+    <label>Mobile Number</label>
+    <input type="tel" placeholder="10-digit mobile number" />
+
+    <button onclick="sendOtp()">Send OTP</button>
+
+    <div class="footer">
+      Authorized access only • © NIDAAN
+    </div>
+  </div>
+
+  <script>
+    function sendOtp() {
+      alert("OTP system will be enabled soon.");
+    }
+  </script>
 </body>
 </html>
