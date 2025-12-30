@@ -1,153 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8" />
-<title>NIDAAN – Secure Login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+<title>NIDAAN Login</title>
 <style>
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
 body {
-  margin: 0;
-  height: 100vh;
-  background: #e5ddd5; /* WhatsApp background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background:#e5ddd5;
+  font-family: system-ui;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
-
-.card {
-  width: 92%;
-  max-width: 360px;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  padding: 22px;
+.box {
+  width:320px;
+  background:#fff;
+  border-radius:8px;
+  padding:20px;
+  box-shadow:0 4px 20px rgba(0,0,0,.15);
 }
-
-h1 {
-  text-align: center;
-  color: #075e54; /* WhatsApp green */
-  margin-bottom: 4px;
-  letter-spacing: 1px;
+h2 {
+  text-align:center;
+  color:#075e54;
 }
-
-p {
-  text-align: center;
-  color: #555;
-  margin-bottom: 18px;
-  font-size: 14px;
+input, button {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:6px;
+  border:1px solid #ccc;
 }
-
-label {
-  font-size: 13px;
-  color: #444;
-  margin-top: 10px;
-  display: block;
-}
-
-input {
-  width: 100%;
-  padding: 11px;
-  margin-top: 6px;
-  border-radius: 7px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-}
-
-input:focus {
-  outline: none;
-  border-color: #25d366;
-}
-
 button {
-  width: 100%;
-  margin-top: 18px;
-  padding: 13px;
-  background: #25d366; /* WhatsApp send button */
-  color: #fff;
-  font-size: 15px;
-  border: none;
-  border-radius: 7px;
-  cursor: pointer;
-  font-weight: bold;
+  background:#25d366;
+  border:none;
+  color:#fff;
+  font-weight:bold;
 }
-
-button:hover {
-  background: #1ebe5d;
-}
-
-#otpBox {
-  display: none;
-}
-
-.footer {
-  margin-top: 16px;
-  text-align: center;
-  font-size: 11px;
-  color: #777;
+.link {
+  text-align:center;
+  margin-top:10px;
+  color:#075e54;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
-<div class="card">
-  <h1>NIDAAN</h1>
-  <p>Secure Access Portal</p>
 
-  <label>Full Name</label>
-  <input type="text" id="name" placeholder="Enter your name" />
+<div class="box" id="loginBox">
+  <h2>NIDAAN</h2>
+  <input id="email" placeholder="Email" />
+  <input id="password" type="password" placeholder="Password" />
+  <button onclick="login()">Login</button>
+  <div class="link" onclick="showRegister()">Create account</div>
+  <div class="link" onclick="showReset()">Forgot password?</div>
+</div>
 
-  <label>Email Address</label>
-  <input type="email" id="email" placeholder="Enter your email" />
+<div class="box" id="registerBox" style="display:none">
+  <h2>Register</h2>
+  <input id="rname" placeholder="Full Name" />
+  <input id="remail" placeholder="Email" />
+  <input id="rpass" type="password" placeholder="Password" />
+  <button onclick="register()">Register</button>
+  <div class="link" onclick="showLogin()">Back to login</div>
+</div>
 
-  <button onclick="sendOtp()">Send OTP</button>
-
-  <div id="otpBox">
-    <label>Enter OTP</label>
-    <input type="text" id="otpInput" placeholder="6-digit OTP" />
-    <button onclick="verifyOtp()">Verify OTP</button>
-  </div>
-
-  <div class="footer">
-    Authorized access only • © NIDAAN
-  </div>
+<div class="box" id="resetBox" style="display:none">
+  <h2>Reset Password</h2>
+  <input id="resetEmail" placeholder="Email" />
+  <input id="newPass" type="password" placeholder="New Password" />
+  <button onclick="resetPass()">Reset</button>
+  <div class="link" onclick="showLogin()">Back</div>
 </div>
 
 <script>
-let generatedOtp = "";
+const API = "https://YOUR-WORKER-URL";
 
-function sendOtp() {
-  const email = document.getElementById("email").value;
-  if (!email) {
-    alert("Please enter email address");
-    return;
-  }
-
-  generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-
-  console.log("OTP (demo):", generatedOtp); // demo only
-
-  alert("OTP sent to your email (demo mode)");
-
-  document.getElementById("otpBox").style.display = "block";
+function showRegister(){
+  hideAll(); registerBox.style.display="block";
+}
+function showLogin(){
+  hideAll(); loginBox.style.display="block";
+}
+function showReset(){
+  hideAll(); resetBox.style.display="block";
+}
+function hideAll(){
+  loginBox.style.display=registerBox.style.display=resetBox.style.display="none";
 }
 
-function verifyOtp() {
-  const userOtp = document.getElementById("otpInput").value;
+async function login(){
+  const r = await fetch(API+"/api/login",{
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      email:email.value,
+      password:password.value
+    })
+  });
+  const d = await r.json();
+  alert(d.success ? "Welcome "+d.name : d.error);
+}
 
-  if (userOtp === generatedOtp) {
-    alert("Login successful ✅");
-    // next page example
-    // window.location.href = "chat.html";
-  } else {
-    alert("Invalid OTP ❌");
-  }
+async function register(){
+  const r = await fetch(API+"/api/register",{
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      name:rname.value,
+      email:remail.value,
+      password:rpass.value
+    })
+  });
+  const d = await r.json();
+  alert(d.success ? "Registered successfully" : d.error);
+}
+
+async function resetPass(){
+  const r = await fetch(API+"/api/reset-password",{
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      email:resetEmail.value,
+      newPassword:newPass.value
+    })
+  });
+  const d = await r.json();
+  alert(d.success ? "Password updated" : d.error);
 }
 </script>
+
 </body>
 </html>
+
